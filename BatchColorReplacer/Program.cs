@@ -41,11 +41,17 @@ namespace BatchColorReplacer
                     foreach (string file in files)
                     {
                         Console.WriteLine("Processing " + file);
+
+                        // Want any png files to be encoded at full bit depth because SFML does not process images with 4 bit depth.
+                        string png = "";
+                        if (file.Contains(".png"))
+                            png = "PNG32:";
+
                         foreach (string colorReplace in colorDefs)
                         {
                             Process p = new Process();
 
-                            converter.Arguments = file + " -fill " + colorReplace.Split(' ')[1] + " -opaque " + colorReplace.Split(' ')[0] + " " + file;
+                            converter.Arguments = file + " -fill " + colorReplace.Split(' ')[1] + " -opaque " + colorReplace.Split(' ')[0] + " " + png + file;
                             Console.WriteLine("    convert.exe " + converter.Arguments);
 
                             p.StartInfo = converter;
